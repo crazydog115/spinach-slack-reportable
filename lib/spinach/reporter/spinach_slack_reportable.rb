@@ -1,26 +1,71 @@
+require 'slack-notifier'
+require 'pry'
 module Spinach
   class Reporter
     module SpinachSlackReportable
-      Spinach.hooks.tap do |hooks|
-        hooks.before_run { |*args| before_run(*args) }
-        hooks.after_run { |*args| after_run(*args) }
-        hooks.before_feature { |*args| before_feature_run(*args) }
-        hooks.after_feature { |*args| after_feature_run(*args) }
-        hooks.on_undefined_feature { |*args| on_feature_not_found(*args) }
-        hooks.before_scenario { |*args| before_scenario_run(*args) }
-        hooks.around_scenario { |*args, &block| around_scenario_run(*args, &block) }
-        hooks.after_scenario { |*args| after_scenario_run(*args) }
-        hooks.on_successful_step { |*args| on_successful_step(*args) }
-        hooks.on_undefined_step { |*args| on_undefined_step(*args) }
-        hooks.on_pending_step { |*args| on_pending_step(*args) }
-        hooks.on_failed_step { |*args| on_failed_step(*args) }
-        hooks.on_error_step { |*args| on_error_step(*args) }
-        hooks.on_skipped_step { |*args| on_skipped_step(*args) }
+      attr_reader :notifier
 
-        hooks.before_feature { |*args| set_current_feature(*args) }
-        hooks.after_feature { |*args| clear_current_feature(*args) }
-        hooks.before_scenario { |*args| set_current_scenario(args.first) }
-        hooks.after_scenario { |*args| clear_current_scenario(args.first) }
+      def initialize(*args)
+        super
+        @notifier = Slack::Notifier.new(
+          ENV['SPINACH_SLACK_WEBHOOK_URL'],
+          channel: ENV['SPINACH_SLACK_CHANNEL'],
+          username: ENV['SPINACH_SLACK_USERNAME']
+        )
+      end
+
+      def before_run(*args)
+        super
+        message = 'Starting Test Run'
+        msg = {
+          fallback: message,
+          text: message,
+          color: 'good'
+        }
+        notifier.ping '', attachments: [msg]
+      end
+
+      def after_run(*args)
+        super
+        message = 'Test Run Complete!'
+        msg = {
+          fallback: message,
+          text: message,
+          color: 'good'
+        }
+        notifier.ping '', attachments: [msg]
+      end
+
+      def on_undefined_step(*args)
+        super
+        step = args[0]
+        msg = {
+          fallback: "#{step_string(step)}\nis not defined.",
+          title: 'Step Not Defined',
+          text: step_string(step),
+          color: 'warning',
+          mrkdwn_in: ['text']
+        }
+        notifier.ping '', attachments: [msg]
+      end
+
+      def on_failed_step(*args)
+        super
+        step, error = args
+        msg = {
+          fallback: "#{step_string(step)}\nfailed.\n```\n#{error.message}\n\n#{error.backtrace[0]}```",
+          title: 'Step Failed',
+          text: "#{step_string(step)}\n```\n#{error.message}\n\n#{error.backtrace.join("\n")}\n```",
+          color: 'danger',
+          mrkdwn_in: ['text']
+        }
+        notifier.ping '', attachments: [msg]
+      end
+
+      private
+
+      def step_string(step)
+        "`#{current_feature.name} :: #{current_scenario.name} :: #{step.name}`"
       end
     end
   end

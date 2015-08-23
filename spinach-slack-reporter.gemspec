@@ -21,4 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'spinach', '~> 0.8'
   spec.add_development_dependency 'rubocop', '~> 0.33'
   spec.add_development_dependency 'overcommit', '~> 0.27'
+  spec.add_development_dependency 'slack-notifier', '~> 1.2'
+  spec.add_development_dependency 'dotenv'
+  spec.add_development_dependency 'pry'
 end

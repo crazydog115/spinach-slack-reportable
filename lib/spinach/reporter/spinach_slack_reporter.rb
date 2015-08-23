@@ -1,9 +1,11 @@
 require 'spinach/reporter/reporting'
+require 'spinach/reporter/spinach_slack_reportable'
 
 module Spinach
   class Reporter
     class SpinachSlackReporter < Reporter
       include Reporting
+      prepend SpinachSlackReportable
 
       def initialize(*args)
         super(*args)
