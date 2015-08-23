@@ -20,6 +20,13 @@ Or install it yourself as:
 
 ## Usage
 
+First, set the following environment variables
+```
+SPINACH_SLACK_WEBHOOK_URL=https://hooks.slack.com/services/your/slack/webhook
+SPINACH_SLACK_CHANNEL=your-slack-channel
+SPINACH_SLACK_USERNAME=user-to-post-to-slack-as
+```
+
 Use the built in `SpinachSlackReporter` with `spinach -r spinach_slack_reporter`,
 or use in your own spinach reporter by adding `prepend SpinachSlackReportable`.
 
