@@ -1,6 +1,6 @@
 # Spinach::Slack::Reporter
 
-TODO: Write a gem description
+Adds support for sending Spinach test failure to Slack
 
 ## Installation
 
@@ -20,11 +20,29 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Use the built in `SpinachSlackReporter` with `spinach -r spinach_slack_reporter`,
+or use in your own spinach reporter by adding `prepend SpinachSlackReportable`.
+
+For example:
+
+```
+# If not using rails,
+# require 'spinach/reporter/spinach_slack_reportable'
+
+module Spinach
+  class Reporter
+    class MySpinachReporter < Reporter
+      include Reporting
+      prepend SpinachSlackReportable
+      ...
+    end
+  end
+end
+```
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/spinach-slack-reporter/fork )
+1. Fork it ( https://github.com/crazydog115/spinach-slack-reporter/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
