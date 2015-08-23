@@ -1,4 +1,4 @@
-# Spinach::Slack::Reporter
+# Spinach::Slack::Reportable
 
 Adds support for sending Spinach test failure to Slack
 
@@ -7,7 +7,7 @@ Adds support for sending Spinach test failure to Slack
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'spinach-slack-reporter'
+gem 'spinach-slack-reportable'
 ```
 
 And then execute:
@@ -16,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install spinach-slack-reporter
+    $ gem install spinach-slack-reportable
 
 ## Usage
 
@@ -42,7 +42,7 @@ end
 
 ## Contributing
 
-1. Fork it ( https://github.com/crazydog115/spinach-slack-reporter/fork )
+1. Fork it ( https://github.com/crazydog115/spinach-slack-reportable/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

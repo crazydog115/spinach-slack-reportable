@@ -3,11 +3,11 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
-  spec.name          = 'spinach-slack-reporter'
+  spec.name          = 'spinach-slack-reportable'
   spec.version       = '0.0.1'
   spec.authors       = ['Jonah Hirsch']
   spec.email         = ['jonahwh@gmail.com']
-  spec.summary       = 'Reporter for Spinach that sends message to Slack'
+  spec.summary       = 'Reporter and module for Spinach that sends message to Slack'
   spec.homepage      = ''
   spec.license       = 'MIT'
 
