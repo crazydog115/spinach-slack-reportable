@@ -51,21 +51,30 @@ module Spinach
 
       def on_failed_step(*args)
         super
-        step, error = args
-        msg = {
-          fallback: "#{step_string(step)}\nfailed.\n```\n#{error.message}\n\n#{error.backtrace[0]}```",
-          title: 'Step Failed',
-          text: "#{step_string(step)}\n```\n#{error.message}\n\n#{error.backtrace.join("\n")}\n```",
-          color: 'danger',
-          mrkdwn_in: ['text']
-        }
-        notifier.ping '', attachments: [msg]
+        step_error(*args, 'Step Failed')
+      end
+
+      def on_error_step(*args)
+        super
+        step_error(*args, 'Step Error')
       end
 
       private
 
       def step_string(step)
         "`#{current_feature.name} :: #{current_scenario.name} :: #{step.name}`"
+      end
+
+      def step_error(*args, title)
+        step, error = args
+        msg = {
+          fallback: "#{step_string(step)}\nfailed.\n```\n#{error.message}\n\n#{error.backtrace[0]}```",
+          title: title,
+          text: "#{step_string(step)}\n```\n#{error.message}\n\n#{error.backtrace.join("\n")}\n```",
+          color: 'danger',
+          mrkdwn_in: ['text']
+        }
+        notifier.ping '', attachments: [msg]
       end
     end
   end
